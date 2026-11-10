@@ -1,0 +1,43 @@
+---
+// Grupos: mitad foto a sangre (izquierda, impresa en la tinta) y mitad texto: cabeza con barra, texto, los tipos de
+// grupo en filas con filete (`items: [{titulo, texto}]`: despedidas, colegios, empresas…) y el botón de presupuesto
+// (`cta`). Sin `imagen`, solo el texto.
+import { seccion, esExterno } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const items = (s?.items ?? []).filter((it) => it?.titulo);
+---
+
+{
+  s && (s.titulo || s.texto || s.antetitulo || s.imagen || items.length > 0) && (
+    <section id={id} class:list={['mitades', 'mitades--foto-izq', { 'mitades--sin-foto': !s.imagen }]}>
+      <div class="mitad-texto">
+        <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+        {items.length > 0 && (
+          <ul class="filas">
+            {items.map((it) => (
+              <li>
+                <h3 class="filas-titulo">{it.titulo}</h3>
+                {it.texto && <p class="filas-texto">{it.texto}</p>}
+              </li>
+            ))}
+          </ul>
+        )}
+        {s.cta && (
+          <p class="botones">
+            <a class="btn-borde" href={s.cta.url} {...(esExterno(s.cta.url) ? { target: '_blank', rel: 'noopener' } : {})}>{s.cta.texto}</a>
+          </p>
+        )}
+      </div>
+      {s.imagen && (
+        <div class="mitad-foto foto foto--sangre">
+          <Imagen src={s.imagen} alt={altSeccion(s)} ancho={1050} alto={1400} />
+        </div>
+      )}
+    </section>
+  )
+}

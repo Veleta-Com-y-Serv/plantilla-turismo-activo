@@ -1,0 +1,61 @@
+---
+// Reserva y contacto (sobre el papel): a la izquierda, cabeza con barra, el teléfono enorme en Saira Condensed,
+// los botones de WhatsApp y de reserva online (`enlace_reservas`, el motor de reservas del cliente; vacío = no sale)
+// y las vías (email, dirección con mapa y horario de site.yaml → contacto). A la derecha, el formulario de reserva
+// (fecha, personas, actividad de la lista y nivel; `niveles` con «;») bajo la barra. `boton_formulario` opcional.
+import { seccion, site, tel, whatsapp, mapa, niveles, esExterno } from '../../data/site';
+import Banda from '../ui/Banda.astro';
+import Titular from '../ui/Titular.astro';
+import Icono from '../ui/Icono.astro';
+import FormularioContacto from '../ui/FormularioContacto.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const c = site.contacto;
+const wa = whatsapp(c.whatsapp, `Hola, quiero reservar una actividad en ${site.nombre}`);
+const reservas = String(s?.enlace_reservas ?? '').trim();
+const boton = (s?.boton_formulario as string) || 'Pedir plaza';
+const hayIzquierda = Boolean(s && (s.titulo || s.texto || s.antetitulo || c.telefono || wa || reservas || c.email || c.direccion || c.horario));
+---
+
+{
+  s && (
+    <Banda id={id} color="papel">
+      <div class="contacto-rejilla">
+        {hayIzquierda && (
+        <div class="cq">
+          <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+          {c.telefono && <a class="telefono-grande" href={tel(c.telefono)}>{c.telefono}</a>}
+          {(wa || reservas) && (
+            <div class="botones">
+              {wa && <a class="btn-borde" href={wa} rel="noopener" target="_blank"><Icono nombre="whatsapp" tam={20} /> Reservar por WhatsApp</a>}
+              {reservas && (
+                <a class="btn-borde" href={reservas} {...(esExterno(reservas) ? { target: '_blank', rel: 'noopener' } : {})}>
+                  <Icono nombre="calendario" tam={20} /> Reserva online
+                </a>
+              )}
+            </div>
+          )}
+          {(c.email || c.direccion || c.horario) && (
+            <ul class="vias">
+              {c.email && (
+                <li><a href={`mailto:${c.email}`}><Icono nombre="correo" tam={20} /><span class="vias-dato">{c.email}</span></a></li>
+              )}
+              {c.direccion && (
+                <li><a href={mapa(c.direccion)} rel="noopener" target="_blank"><Icono nombre="mapa" tam={20} /><span class="vias-dato">{c.direccion}</span></a></li>
+              )}
+              {c.horario && (
+                <li><p><Icono nombre="reloj" tam={20} /><span class="vias-dato">{c.horario}</span></p></li>
+              )}
+            </ul>
+          )}
+        </div>
+        )}
+        <div class="formulario-caja">
+          <p class="formulario-titulo">{boton}</p>
+          <FormularioContacto prefijo={`${id}-f`} boton={boton} reserva niveles={niveles(s.niveles)} asunto={`Reserva desde la web de ${site.nombre}`} />
+        </div>
+      </div>
+    </Banda>
+  )
+}

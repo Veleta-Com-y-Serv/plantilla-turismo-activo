@@ -1,0 +1,47 @@
+---
+// Apartado genérico (`tipo: texto` o cualquier sección sin diseño propio): cabeza, párrafos (`texto` con líneas en
+// blanco), `imagen` opcional a la derecha impresa en la tinta, `items: [{titulo, texto}]` en filas con filete y `cta`.
+import { seccion, parrafos, esExterno } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Banda from '../ui/Banda.astro';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const items = (s?.items ?? []).filter((it) => it?.titulo);
+const ps = parrafos(s?.texto);
+---
+
+{
+  s && (s.titulo || s.texto || s.antetitulo || s.imagen || items.length > 0) && (
+    <Banda id={id} color="papel">
+      <div class:list={['grid gap-10', { 'lg:grid-cols-2 lg:gap-16 lg:items-start': s.imagen }]}>
+        <div class="min-w-0">
+          <Titular antetitulo={s.antetitulo} titulo={s.titulo} cabeza={false} class="pt-5 border-t-2 [border-color:var(--barra)]" />
+          {ps.length > 0 && <div class="parrafos mt-6">{ps.map((p) => <p>{p}</p>)}</div>}
+          {items.length > 0 && (
+            <ul class="filas">
+              {items.map((it) => (
+                <li>
+                  <h3 class="filas-titulo">{it.titulo}</h3>
+                  {it.texto && <p class="filas-texto">{it.texto}</p>}
+                </li>
+              ))}
+            </ul>
+          )}
+          {s.cta && (
+            <p class="botones">
+              <a class="btn-borde" href={s.cta.url} {...(esExterno(s.cta.url) ? { target: '_blank', rel: 'noopener' } : {})}>{s.cta.texto}</a>
+            </p>
+          )}
+        </div>
+        {s.imagen && (
+          <div class="foto aspect-[4/3]">
+            <Imagen src={s.imagen} alt={altSeccion(s)} ancho={1200} alto={900} />
+          </div>
+        )}
+      </div>
+    </Banda>
+  )
+}

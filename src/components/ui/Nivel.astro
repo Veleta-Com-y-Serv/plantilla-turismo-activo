@@ -1,0 +1,20 @@
+---
+// Nivel de una actividad: el texto tal cual y, si se reconoce (Iniciación, Medio, Avanzado…), tres barras de 1 a 3.
+import { escalones } from '../../data/site';
+interface Props { nivel?: string }
+const { nivel = '' } = Astro.props;
+const n = escalones(nivel);
+---
+
+{
+  nivel && (
+    <span class="nivel">
+      {n > 0 && (
+        <span class="nivel-barras" aria-hidden="true">
+          {[1, 2, 3].map((k) => <i class:list={{ lleno: k <= n }} />)}
+        </span>
+      )}
+      {nivel}
+    </span>
+  )
+}

@@ -1,0 +1,70 @@
+---
+// Portada «Poster»: la foto (`imagen`) a sangre a todo el ancho, impresa en la tinta, con un velo de tinta desde
+// abajo y la izquierda; encima, abajo a la izquierda, el antetítulo, el titular en Saira Condensed, una frase y los dos
+// botones (lima lleno + borde claro). Debajo, sobre el papel, las cifras (`items: [{titulo, texto}]`: la cifra en grande
+// y su etiqueta) entre la barra de 2 px y un filete. Sin `imagen`, la portada va sobre la banda oscura.
+// Sin `cta`, el primer botón llama; sin `cta_secundario`, lleva a las actividades si existen.
+import { seccion, site, tel, externo, anchoTitular } from '../../data/site';
+import { altHero } from '../../lib/seo';
+import { enlace } from '../../lib/multipagina';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string; primera?: boolean }
+const { id, primera = false } = Astro.props;
+const s = seccion(id);
+const c = site.contacto;
+const principal = s?.cta?.url ? s.cta : c.telefono ? { texto: `Llamar al ${c.telefono}`, url: tel(c.telefono) } : null;
+const secundario = s?.cta_secundario?.url ? s.cta_secundario : seccion('actividades')?.actividades.length ? { texto: 'Ver actividades', url: enlace('/#actividades') } : null;
+const cifras = (s?.items ?? []).filter((it) => String(it?.titulo ?? '').trim());
+---
+
+{
+  s && (
+    <section id={id} class="portada">
+      <div class="portada-escena">
+        {s.imagen && (
+          <>
+            <div class="portada-foto foto foto--sangre">
+              <Imagen src={s.imagen} alt={altHero()} ancho={1536} alto={864} prioridad={primera} />
+            </div>
+            <div class="portada-velo" aria-hidden="true" />
+          </>
+        )}
+        <div class="portada-texto contenedor">
+          <div class="portada-columna cq">
+            {s.antetitulo && <p class="antetitulo">{s.antetitulo}</p>}
+            <h1 class="portada-titulo" style={`--k:${anchoTitular(s.titulo || site.nombre)}`}>{s.titulo || site.nombre}</h1>
+            {s.texto && <p class="portada-parrafo">{s.texto}</p>}
+            {(principal || secundario) && (
+              <div class="botones">
+                {principal && (
+                  <a class="btn" href={principal.url} {...(externo(principal.url) && { rel: 'noopener', target: '_blank' })}>
+                    {principal.texto}
+                  </a>
+                )}
+                {secundario && (
+                  <a class="btn-borde" href={secundario.url} {...(externo(secundario.url) && { rel: 'noopener', target: '_blank' })}>
+                    {secundario.texto}
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      {cifras.length > 0 && (
+        <div class="cifras">
+          <div class="contenedor">
+            <ul class="cifras-lista" style={`--n:${Math.min(cifras.length, 4)}`}>
+              {cifras.map((it) => (
+                <li class="cifra">
+                  <span class="cifra-valor">{it.titulo}</span>
+                  {it.texto && <span class="cifra-texto">{it.texto}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+    </section>
+  )
+}

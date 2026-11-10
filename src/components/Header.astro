@@ -1,0 +1,61 @@
+---
+// Cabecera «salida»: fija arriba, a todo el ancho y siempre sólida, en la banda oscura (color primario). Nombre en
+// Saira Condensed (o el logo), menú (site.yaml → menu) con subrayado lima al pasar, WhatsApp (contacto.whatsapp; el
+// texto solo en pantallas anchas) y el botón lleno de reservar (boton_cabecera). En móvil, menú plegable con <details>
+// (abre sin JavaScript). Va por encima de todo (z-index 300). Aspecto: .cabecera--salida en global.css.
+import { site, whatsapp } from '../data/site';
+import type { Enlace } from '../data/site';
+import Icono from './ui/Icono.astro';
+interface Props { variante?: string; cta?: Enlace | null }
+const { variante = 'salida', cta = null } = Astro.props;
+const wa = whatsapp(site.contacto.whatsapp, `Hola, escribo desde la web de ${site.nombre}.`);
+---
+
+<header class={`cabecera cabecera--${variante}`}>
+  <div class="contenedor cabecera-fila">
+    <a href="/" class="marca" aria-label={`${site.nombre}, inicio`}>
+      {
+        site.logo ? (
+          <img src={site.logo} alt={site.nombre} class="marca-logo" width="160" height="40" />
+        ) : (
+          <span class="marca-nombre">{site.nombre}</span>
+        )
+      }
+    </a>
+    {
+      site.menu.length > 0 && (
+        <nav class="cabecera-nav" aria-label="Menú principal">
+          {site.menu.map((e) => <a href={e.url}>{e.texto}</a>)}
+        </nav>
+      )
+    }
+    {
+      wa && (
+        <a class="cabecera-wa" href={wa} rel="noopener" target="_blank" aria-label="Escribir por WhatsApp">
+          <Icono nombre="whatsapp" tam={22} />
+          <span>WhatsApp</span>
+        </a>
+      )
+    }
+    {cta && cta.url && <a href={cta.url} class="btn cabecera-cta">{cta.texto}</a>}
+    {
+      (site.menu.length > 0 || (cta && cta.url)) && (
+        <details class="menu-movil">
+          <summary>
+            <span class="menu-movil-icono" aria-hidden="true" />
+            <span>Menú</span>
+          </summary>
+          <nav class="menu-movil-panel" aria-label="Menú">
+            {site.menu.map((e) => <a href={e.url}>{e.texto}</a>)}
+            {cta && cta.url && <a href={cta.url} class="btn">{cta.texto}</a>}
+          </nav>
+        </details>
+      )
+    }
+  </div>
+</header>
+<script is:inline>
+  document.querySelectorAll('.menu-movil a').forEach(function (a) {
+    a.addEventListener('click', function () { a.closest('details').open = false; });
+  });
+</script>

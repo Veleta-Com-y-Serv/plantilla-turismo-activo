@@ -1,0 +1,31 @@
+---
+// Galería: cabeza y las fotos (`galeria: [ruta…]`) impresas en la tinta: la primera grande (8 columnas) y la segunda
+// a su lado de la misma altura; las demás, debajo de tres en tres. Con una sola foto, panorámica a todo el ancho.
+import { seccion } from '../../data/site';
+import { altGaleria } from '../../lib/seo';
+import Banda from '../ui/Banda.astro';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const fotos = (s?.galeria ?? []).filter(Boolean);
+const variante = fotos.length === 1 ? 'escaparate--1' : fotos.length === 3 ? 'escaparate--3' : fotos.length > 3 ? 'escaparate--n' : '';
+---
+
+{
+  s && (s.titulo || s.texto || s.antetitulo || fotos.length > 0) && (
+    <Banda id={id} color="papel">
+      <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} cabeza />
+      {fotos.length > 0 && (
+        <div class:list={['escaparate', variante]}>
+          {fotos.map((src, i) => (
+            <figure class="foto foto--color">
+              <Imagen src={src} alt={altGaleria(i)} ancho={1350} alto={900} />
+            </figure>
+          ))}
+        </div>
+      )}
+    </Banda>
+  )
+}

@@ -1,0 +1,35 @@
+---
+// Preguntas frecuentes: cabeza a la izquierda (fija al bajar en escritorio) y las preguntas en filas `details/summary`
+// con filete (abren sin JavaScript). Campos: `preguntas: [{pregunta, respuesta}]`. Sin preguntas no se pinta.
+// Van también al JSON-LD FAQPage (src/lib/seo.ts).
+import { seccion, parrafos } from '../../data/site';
+import Banda from '../ui/Banda.astro';
+import Titular from '../ui/Titular.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const lista = (s?.preguntas ?? []).filter((p) => p?.pregunta);
+---
+
+{
+  s && lista.length > 0 && (
+    <Banda id={id} color="clara">
+      <div class="preguntas-rejilla">
+        <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+        <div>
+          {lista.map((p) => (
+            <details class="faq">
+              <summary>
+                <span>{p.pregunta}</span>
+                <span class="faq-signo" aria-hidden="true" />
+              </summary>
+              <div class="faq-respuesta">
+                {parrafos(p.respuesta).map((t) => <p>{t}</p>)}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </Banda>
+  )
+}

@@ -1,0 +1,166 @@
+---
+// Ficha de una actividad con `detalle` (src/lib/paginas.ts, listas de src/data/fichas.ts): /actividades/<slug>/.
+// Diseño «hoja de salida»: a la izquierda migas, categoría, título en Saira Condensed, el texto corto, la hoja de datos
+// (nivel, duración, edad mínima, temporada), el precio por persona y los botones; a la derecha, la foto impresa en la
+// tinta hasta el borde. Debajo, el `detalle` y, al lado, «Qué incluye» y la caja de reserva bajo la barra; las fotos
+// (`imagenes`) y otras actividades con página. Los botones van a la sección de contacto (o al botón de la cabecera).
+import Base from '../../layouts/Base.astro';
+import Banda from '../../components/ui/Banda.astro';
+import Imagen from '../../components/ui/Imagen.astro';
+import Icono from '../../components/ui/Icono.astro';
+import Nivel from '../../components/ui/Nivel.astro';
+import { seccion, site, tel, whatsapp, puntos, anchoTitular } from '../../data/site';
+import { fichas, relacionadas, resumen } from '../../lib/paginas';
+import type { Ficha } from '../../lib/paginas';
+import { altGaleria, jsonLdFicha, jsonLdMigas, urlBase } from '../../lib/seo';
+import { enlace, rutaDeSeccion } from '../../lib/multipagina';
+
+export function getStaticPaths() {
+  return fichas().map((f) => ({ params: { coleccion: f.def.ruta, slug: f.slug }, props: { f } }));
+}
+
+interface Props { f: Ficha }
+const { f } = Astro.props;
+const base = urlBase(Astro.site);
+const nombreSeccion = String(f.seccion.titulo || f.def.nombre).trim();
+const migas = [
+  { nombre: 'Inicio', ruta: '/' },
+  { nombre: nombreSeccion, ruta: rutaDeSeccion(f.idSeccion) },
+  { nombre: f.titulo, ruta: f.url },
+];
+const c = site.contacto;
+const e = f.elemento as Record<string, unknown>;
+const txt = (k: string) => String(e[k] ?? '').trim();
+const reserva = seccion('contacto') ? enlace('/#contacto') : site.boton_cabecera?.url || '';
+const wa = whatsapp(c.whatsapp, `Hola, quiero reservar: ${f.titulo}`);
+const datos = [
+  txt('nivel') && { dt: 'Nivel', dd: 'nivel' },
+  txt('duracion') && { dt: 'Duración', dd: txt('duracion') },
+  txt('edad') && { dt: 'Edad mínima', dd: txt('edad') },
+  txt('temporada') && { dt: 'Temporada', dd: txt('temporada') },
+].filter(Boolean) as { dt: string; dd: string }[];
+const incluye = puntos(e.incluye);
+const otras = relacionadas(f, 3);
+const descripcion = resumen(f.texto || f.detalle[0] || '');
+---
+
+<Base titulo={f.titulo} descripcion={descripcion} imagen={f.imagen} ld={[jsonLdMigas(base, migas), jsonLdFicha(base, f)]}>
+  <section class:list={['mitades', 'ficha-hero', { 'mitades--sin-foto': !f.imagen }]}>
+    <div class="mitad-texto ficha-cabeza">
+      <nav aria-label="Migas de pan" class="migas">
+        <ol>
+          {migas.map((m, i) => (
+            <li>{i < migas.length - 1 ? <a href={m.ruta}>{m.nombre}</a> : <span aria-current="page">{m.nombre}</span>}</li>
+          ))}
+        </ol>
+      </nav>
+      <div class="cq ficha-titular">
+        {f.categoria && <p class="antetitulo">{f.categoria}</p>}
+        <h1 class="titulo-seccion ficha-titulo" style={`--k:${anchoTitular(f.titulo)}`}>{f.titulo}</h1>
+      </div>
+      {f.texto && <p class="entrada mt-5">{f.texto}</p>}
+      {datos.length > 0 && (
+        <dl class="hoja-datos mt-8">
+          {datos.map((d) => (
+            <div>
+              <dt>{d.dt}</dt>
+              <dd>{d.dd === 'nivel' ? <Nivel nivel={txt('nivel')} /> : d.dd}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      {f.precio && (
+        <p class="precio mt-6"><span class="precio-cifra ficha-precio">{f.precio}</span><span class="precio-nota">por persona</span></p>
+      )}
+      <div class="botones">
+        {reserva && <a class="btn" href={reserva}>Reservar</a>}
+        {wa && <a class="btn-borde" href={wa} target="_blank" rel="noopener"><Icono nombre="whatsapp" tam={20} /> WhatsApp</a>}
+      </div>
+    </div>
+    {f.imagen && (
+      <div class="mitad-foto foto foto--color foto--sangre">
+        <Imagen src={f.imagen} alt={f.titulo} ancho={1280} alto={960} prioridad />
+      </div>
+    )}
+  </section>
+
+  <Banda color="clara">
+    <div class="ficha-cuerpo">
+      <article class="texto-largo ficha-detalle">
+        {f.detalle.map((p) => <p>{p}</p>)}
+      </article>
+      <aside class="ficha-lado">
+        {incluye.length > 0 && (
+          <div class="ficha-caja">
+            <h2 class="ficha-caja-titulo">Qué incluye</h2>
+            <ul class="servicios servicios--1">
+              {incluye.map((x) => <li><Icono nombre="check" tam={20} />{x}</li>)}
+            </ul>
+          </div>
+        )}
+        <div class="ficha-caja">
+          <h2 class="ficha-caja-titulo">Reserva tu plaza</h2>
+          <p class="mt-3">Dinos el día y cuántos sois y te confirmamos la hora.</p>
+          <div class="botones mt-5">
+            {reserva && <a class="btn" href={reserva}>Reservar</a>}
+            {c.telefono && <a class="btn-borde" href={tel(c.telefono)}><Icono nombre="telefono" tam={18} /> {c.telefono}</a>}
+          </div>
+        </div>
+      </aside>
+    </div>
+  </Banda>
+
+  {f.imagenes.length > 0 && (
+    <Banda color="papel" etiqueta={`Fotos de ${f.titulo}`}>
+      <div class:list={['escaparate', f.imagenes.length === 1 ? 'escaparate--1' : f.imagenes.length === 3 ? 'escaparate--3' : f.imagenes.length > 3 ? 'escaparate--n' : '']}>
+        {f.imagenes.map((src, i) => (
+          <figure class="foto foto--color"><Imagen src={src} alt={`${f.titulo}: ${altGaleria(i).toLowerCase()}`} ancho={1350} alto={900} /></figure>
+        ))}
+      </div>
+    </Banda>
+  )}
+
+  {otras.length > 0 && (
+    <Banda color="papel">
+      <div class="cabeza">
+        <div class="cq"><h2 class="titulo-seccion" style={`--k:${anchoTitular('Otras actividades')}`}>Otras actividades</h2></div>
+        <p class="entrada"><a class="enlace" href={rutaDeSeccion(f.idSeccion)}>Ver todas las actividades</a></p>
+      </div>
+      <ul class="actividades-lista" style={`--cols:${otras.length === 2 ? 2 : 3}`}>
+        {otras.map((o) => (
+          <li class="act">
+            {o.imagen && <div class="act-foto foto foto--color"><Imagen src={o.imagen} alt={o.titulo} ancho={1280} alto={960} /></div>}
+            <div class="act-cuerpo cq">
+              {o.categoria && <p class="act-cat"><span class="etiqueta">{o.categoria}</span></p>}
+              <h3 class="act-titulo" style={`--k:${anchoTitular(o.titulo, 5)}`}><a href={o.url}>{o.titulo}</a></h3>
+              {o.texto && <p class="act-texto">{o.texto}</p>}
+              {o.precio && (
+                <div class="act-pie"><p class="precio"><span class="precio-cifra">{o.precio}</span><span class="precio-nota">por persona</span></p></div>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </Banda>
+  )}
+</Base>
+
+<style>
+  .ficha-cabeza { padding-top: 1.5rem; }
+  @media (max-width: 59.99rem) { .ficha-hero > .mitad-foto { order: -1; min-height: 16rem; } }
+  .ficha-titular { margin-top: 1.5rem; padding-top: 1.25rem; border-top: var(--filete-barra) solid var(--barra); }
+  .ficha-titulo { font-size: min(4.5rem, 100cqi / var(--k, 13)); }
+  .ficha-precio { font-size: 3rem; }
+  .ficha-cuerpo { display: grid; gap: 3rem; }
+  .ficha-detalle { max-width: 44rem; font-size: 1.12rem; }
+  .ficha-detalle p + p { margin-top: 1.2rem; }
+  .ficha-detalle p:first-child { font-size: 1.25rem; color: var(--tinta); }
+  .ficha-lado { display: grid; gap: 2.5rem; align-content: start; }
+  .ficha-caja { padding-top: 1.25rem; border-top: var(--filete-barra) solid var(--barra); }
+  .ficha-caja-titulo { font-size: 1.75rem; }
+  .servicios--1 { grid-template-columns: minmax(0, 1fr) !important; margin-top: 1rem; }
+  @media (min-width: 60rem) {
+    .ficha-cuerpo { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 5rem; align-items: start; }
+    .ficha-lado { position: sticky; top: calc(var(--alto-cabecera) + 1.5rem); }
+  }
+</style>

@@ -1,0 +1,31 @@
+---
+// Seguridad: banda clara (un paso de papel) con la cabeza a la izquierda y, a la derecha, lo que garantiza la empresa
+// en filas con filete (`items: [{titulo, texto}]`: monitores titulados, seguro, material, parte del río).
+import { seccion } from '../../data/site';
+import Banda from '../ui/Banda.astro';
+import Titular from '../ui/Titular.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const items = (s?.items ?? []).filter((it) => it?.titulo);
+---
+
+{
+  s && (s.titulo || s.texto || s.antetitulo || items.length > 0) && (
+    <Banda id={id} color="clara">
+      <div class:list={[{ partido: items.length > 0 }]}>
+        <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+        {items.length > 0 && (
+          <ul class="filas">
+            {items.map((it) => (
+              <li>
+                <h3 class="filas-titulo">{it.titulo}</h3>
+                {it.texto && <p class="filas-texto">{it.texto}</p>}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </Banda>
+  )
+}

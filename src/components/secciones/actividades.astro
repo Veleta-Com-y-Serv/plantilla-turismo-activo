@@ -1,0 +1,122 @@
+---
+// Actividades: el catálogo. Cabeza de sección; si hay dos o más `categoria` distintas, un filtro (Todas, Agua,
+// Montaña…) que funciona con un JavaScript pequeño (sin él, se ven todas y el filtro no sale). La actividad con
+// `destacado: true` (o la primera) va en grande: foto a la izquierda y su hoja a la derecha; el resto, en rejilla.
+// Cada una es una «hoja de salida»: foto impresa en la tinta, categoría, título, texto, la hoja de datos (nivel con
+// tres barras, duración, edad mínima, temporada), qué incluye y el precio por persona en cifra condensada.
+// Las que tienen `detalle` tienen página propia (/actividades/<nombre>/): el título enlaza y toda la ficha es clicable.
+// Campos: `actividades: [{titulo, categoria, texto, nivel, duracion, edad, precio, temporada, incluye, imagen, destacado, detalle, imagenes}]`.
+import { seccion, categorias, puntos, anchoTitular, esExterno } from '../../data/site';
+import { altFicha } from '../../lib/seo';
+import { enlaceDe } from '../../lib/paginas';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+import Nivel from '../ui/Nivel.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const todas = s?.actividades ?? [];
+const iLider = Math.max(0, todas.findIndex((a) => a.destacado === true));
+const lista = todas.length > 1 ? [todas[iLider], ...todas.filter((_, i) => i !== iLider)] : todas;
+const cats = categorias(todas);
+const resto = lista.length - 1;
+const cols = resto % 3 === 0 ? 3 : resto % 2 === 0 ? 2 : 3;
+---
+
+{
+  s && (s.titulo || s.texto || s.antetitulo || lista.length > 0) && (
+    <section id={id} class="banda banda--papel actividades">
+      <div class="contenedor">
+        <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} cabeza />
+        {cats.length > 1 && (
+          <div class="filtro" role="group" aria-label="Filtrar actividades" data-filtro hidden>
+            <button type="button" aria-pressed="true" data-cat="">Todas</button>
+            {cats.map((c) => <button type="button" aria-pressed="false" data-cat={c}>{c}</button>)}
+          </div>
+        )}
+        {lista.length > 0 && (
+          <ul class="actividades-lista" style={`--cols:${cols}`} data-lista>
+            {lista.map((a, i) => {
+              const href = enlaceDe(a);
+              const incluye = puntos(a.incluye);
+              const datos = [
+                a.nivel && { dt: 'Nivel', dd: 'nivel' },
+                a.duracion && { dt: 'Duración', dd: a.duracion },
+                a.edad && { dt: 'Edad mínima', dd: a.edad },
+                a.temporada && { dt: 'Temporada', dd: a.temporada },
+              ].filter(Boolean) as { dt: string; dd: string }[];
+              const lider = i === 0 && lista.length > 1;
+              return (
+                <li class:list={['act', { 'act--lider': lider }]} data-cat={a.categoria ?? ''}>
+                  {a.imagen ? (
+                    <div class="act-foto foto foto--color">
+                      <Imagen src={a.imagen} alt={altFicha(a)} ancho={1280} alto={960} />
+                    </div>
+                  ) : (
+                    <div class="act-sinfoto" aria-hidden="true"><Icono nombre="agua" tam={48} /></div>
+                  )}
+                  <div class="act-cuerpo cq">
+                    {(a.categoria || a.destacado) && (
+                      <p class="act-cat">
+                        {a.categoria && <span class="etiqueta">{a.categoria}</span>}
+                        {a.destacado && <span class="act-marca">La más reservada</span>}
+                      </p>
+                    )}
+                    <h3 class="act-titulo" style={`--k:${anchoTitular(a.titulo, 5)}`}>{href ? <a href={href}>{a.titulo}</a> : a.titulo}</h3>
+                    {a.texto && <p class="act-texto">{a.texto}</p>}
+                    {datos.length > 0 && (
+                      <dl class:list={['hoja-datos', { 'hoja-datos--2': !lider }]}>
+                        {datos.map((d) => (
+                          <div>
+                            <dt>{d.dt}</dt>
+                            <dd>{d.dd === 'nivel' ? <Nivel nivel={a.nivel} /> : d.dd}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    )}
+                    {lider && incluye.length > 0 && (
+                      <p class="act-incluye"><strong>Incluye:</strong>{' '}{incluye.join(', ')}.</p>
+                    )}
+                    {(a.precio || href) && (
+                      <div class="act-pie">
+                        {a.precio ? (
+                          <p class="precio">
+                            <span class="precio-cifra">{a.precio}</span>
+                            <span class="precio-nota">por persona</span>
+                          </p>
+                        ) : <span />}
+                        {href && <span class="act-ver" aria-hidden="true">Ver la actividad</span>}
+                      </div>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        {s.cta && (
+          <p class="botones">
+            <a class="btn-borde" href={s.cta.url} {...(esExterno(s.cta.url) ? { target: '_blank', rel: 'noopener' } : {})}>{s.cta.texto}</a>
+          </p>
+        )}
+      </div>
+    </section>
+  )
+}
+<script is:inline>
+  document.querySelectorAll('[data-filtro]').forEach(function (f) {
+    var lista = f.parentNode.querySelector('[data-lista]');
+    if (!lista) return;
+    f.hidden = false;
+    f.addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (!b) return;
+      var cat = b.getAttribute('data-cat');
+      f.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      lista.querySelectorAll('.act').forEach(function (li) {
+        li.hidden = cat !== '' && li.getAttribute('data-cat') !== cat;
+      });
+    });
+  });
+</script>

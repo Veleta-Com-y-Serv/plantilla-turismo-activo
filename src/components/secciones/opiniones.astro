@@ -1,0 +1,36 @@
+---
+// Opiniones: la primera como frase grande bajo la barra y las demás en dos columnas con filete fino.
+// Campos: `testimonios: [{texto, autor, nota}]` (nota = la actividad o la fecha). No inventes opiniones.
+import { seccion } from '../../data/site';
+import Banda from '../ui/Banda.astro';
+import Titular from '../ui/Titular.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const lista = (s?.testimonios ?? []).filter((t) => t?.texto);
+const [primera, ...resto] = lista;
+---
+
+{
+  s && lista.length > 0 && (
+    <Banda id={id} color="clara">
+      <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} cabeza />
+      {primera && (
+        <figure class="cita">
+          <blockquote>“{primera.texto}”</blockquote>
+          <figcaption class="cita-autor"><span class="autor">{primera.autor}</span>{primera.nota && <span class="etiqueta">, {primera.nota}</span>}</figcaption>
+        </figure>
+      )}
+      {resto.length > 0 && (
+        <ul class="opiniones-resto">
+          {resto.map((t) => (
+            <li>
+              <p class="opinion-texto">“{t.texto}”</p>
+              <p class="opinion-autor"><span class="autor">{t.autor}</span>{t.nota && <span class="etiqueta">, {t.nota}</span>}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Banda>
+  )
+}

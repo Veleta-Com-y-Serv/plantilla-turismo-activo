@@ -1,0 +1,244 @@
+# Contenido de la web. Es lo único que rellena la plataforma NoExpertise.
+# Una sola página: el menú apunta a anclas (#id-de-sección).
+# Las secciones se muestran en el orden de este fichero. Para ocultar una: activa: false.
+# Apartado nuevo: un id propio (es su ancla, /#id) con `tipo:` = el diseño de otra sección o `texto`.
+# Listas planas: nunca una lista dentro de un elemento de lista. Precios siempre entre comillas.
+nombre: Caudal Aventura
+eslogan: Rafting, barrancos y multiaventura en Sort, con base propia junto a la Noguera Pallaresa.
+sector: turismo-activo
+logo: ""          # ruta a una imagen en public/ (p. ej. /logo.svg). Vacío = el nombre en letra condensada.
+colores:
+  primario: "#121c45"   # banda oscura: cabecera, la jornada y el pie
+  acento: "#cdf23d"     # el amarillo lima: botón de reservar, la etapa destacada, el pack más pedido
+  fondo: "#f5f7fa"      # papel gris frío
+  texto: "#0a1230"      # tinta azul casi negra (también colorea las fotos)
+contacto:
+  telefono: "973 000 000"
+  email: reservas@caudalaventura.es
+  direccion: Carretera de la Noguera 14, 25560 Sort (Lleida)
+  horario: "De abril a octubre, todos los días de 9:00 a 19:00. En invierno, de lunes a viernes por teléfono."
+  whatsapp: "+34 600 000 000"
+redes:
+  instagram: https://www.instagram.com/
+  facebook: https://www.facebook.com/
+  linkedin: ""
+menu:
+  - { texto: Actividades, url: "/#actividades" }
+  - { texto: Packs, url: "/#packs" }
+  - { texto: Grupos, url: "/#grupos" }
+  - { texto: La base, url: "/#base" }
+  - { texto: Preguntas, url: "/#preguntas" }
+boton_cabecera: { texto: Reservar, url: "/#contacto" }
+seo:
+  titulo: Caudal Aventura · Rafting y multiaventura en Sort (Pirineo)
+  descripcion: "Rafting, hidrospeed, barranquismo, vía ferrata y kayak en Sort, con monitores titulados y base propia junto al río. Packs para grupos y empresas."
+  tipo: SportsActivityLocation
+marca_pie: true
+
+secciones:
+  hero:
+    activa: true
+    antetitulo: Base de aventura en Sort, Pallars Sobirà
+    titulo: Baja la Noguera en rafting
+    texto: "Rafting, barrancos y vía ferrata desde nuestra base junto al río."
+    imagen: /fotos/hero.jpg
+    cta: { texto: Reserva tu plaza, url: "/#contacto" }
+    cta_secundario: { texto: Ver actividades, url: "/#actividades" }
+    items:
+      - { titulo: "7", texto: "actividades en el río y la montaña" }
+      - { titulo: "1 de 8", texto: "un monitor por cada ocho en el agua" }
+      - { titulo: "6 años", texto: "edad mínima en el parque de aventura" }
+      - { titulo: "Abr a oct", texto: "temporada de río" }
+
+  actividades:
+    activa: true
+    antetitulo: Elige por agua, montaña o tierra
+    titulo: Nuestras actividades
+    texto: "Todas con el material incluido y monitor titulado. Mira el nivel, la edad mínima y el precio por persona."
+    actividades:
+      - titulo: Rafting en la Noguera Pallaresa
+        categoria: Agua
+        texto: "El descenso clásico del Pirineo: 14 km de rápidos en balsa de seis a ocho personas."
+        nivel: Iniciación
+        duracion: "2 h en el río"
+        edad: "Desde 12 años"
+        precio: "39 €"
+        temporada: "Abril a octubre"
+        incluye: "Neopreno, chaqueta y escarpines; casco y chaleco; monitor titulado; fotos del descenso"
+        imagen: /fotos/act-rafting.jpg
+        destacado: true
+        imagenes: "/fotos/hero.jpg; /fotos/galeria-1.jpg"
+        detalle: |
+          Es la actividad con la que empieza casi todo el mundo y la que más repite. Bajamos el tramo de Llavorsí a Sort, unos catorce kilómetros con rápidos para todos los gustos: olas grandes que mojan a toda la balsa, tramos tranquilos para mirar el valle y algún paso en el que hay que remar fuerte y a la vez.
+
+          Cada balsa va con un monitor titulado que lleva el timón y canta las remadas. Antes de entrar al agua te equipamos en la base y te explicamos en la orilla cómo se rema, qué hacer si caes al agua y cómo se ayuda a un compañero. No hace falta experiencia, solo saber nadar y tener ganas de mojarse.
+
+          En primavera, con el deshielo, el río baja con más caudal y el descenso es más movido. En verano el agua está más templada y es el mejor momento para ir en familia con chicos a partir de doce años. Al volver tienes duchas con agua caliente y las fotos del descenso en tu móvil.
+      - titulo: Hidrospeed
+        categoria: Agua
+        texto: "Bajas el río tumbado sobre un trineo, con aletas y a ras de las olas."
+        nivel: Medio
+        duracion: "1,5 h en el río"
+        edad: "Desde 14 años"
+        precio: "45 €"
+        temporada: "Mayo a septiembre"
+        incluye: "Neopreno de 5 mm; casco, chaleco y aletas; trineo; monitor titulado"
+        imagen: /fotos/act-hidrospeed.jpg
+        detalle: |
+          El hidrospeed es el río sin balsa: vas tumbado sobre un trineo de flotación, con las piernas en el agua y aletas para dirigirte. Sientes cada ola de frente y eres tú quien decide por dónde pasar cada rápido, siempre detrás de tu monitor.
+
+          Empezamos en una zona tranquila para que aprendas a girar, a parar en una contracorriente y a dejarte llevar sin luchar contra el agua. Después bajamos tramos con más movimiento, en grupos pequeños para que el monitor pueda estar pendiente de todos.
+
+          Es una actividad más física que el rafting: conviene nadar con soltura y estar en forma. El neopreno es grueso y el agua del Pirineo está fría incluso en agosto, así que nadie pasa frío. Si es tu primera vez en aguas bravas, te recomendamos empezar por el rafting y volver otro día al hidrospeed.
+      - titulo: Barranquismo
+        categoria: Montaña
+        texto: "Saltos a pozas, toboganes de roca y rápeles junto a la cascada."
+        nivel: Medio
+        duracion: "3 a 4 h"
+        edad: "Desde 12 años"
+        precio: "49 €"
+        temporada: "Junio a septiembre"
+        incluye: "Neopreno y escarpines; casco y arnés; transporte al barranco; monitor titulado"
+        imagen: /fotos/act-barranquismo.jpg
+        imagenes: "/fotos/galeria-2.jpg"
+        detalle: |
+          Bajar un barranco es una mezcla de montaña y juego. Caminamos un rato hasta la cabecera y desde ahí seguimos el agua: toboganes naturales en la roca, saltos a pozas de agua clara y rápeles junto a las cascadas, con el monitor delante montando cada cuerda.
+
+          Elegimos el barranco según el grupo y el caudal del día. Para quien empieza hay barrancos cortos con saltos pequeños y todos opcionales: si alguien no quiere saltar, siempre hay una forma de bajar andando o con cuerda.
+
+          Te llevamos desde la base en nuestra furgoneta y te damos todo el equipo. Tú solo necesitas bañador, toalla y calzado que pueda mojarse si quieres el tuyo. Es la actividad favorita de las despedidas y de los grupos de amigos.
+      - titulo: Vía ferrata
+        categoria: Montaña
+        texto: "Peldaños, cables y un puente colgante sobre el valle, siempre asegurado."
+        nivel: Medio
+        duracion: "3 h"
+        edad: "Desde 10 años"
+        precio: "45 €"
+        temporada: "Todo el año"
+        incluye: "Casco, arnés y disipador; monitor titulado; fotos en la pared"
+        imagen: /fotos/act-via-ferrata.jpg
+        detalle: |
+          Una vía ferrata es una pared de roca preparada con peldaños, grapas y un cable de acero al que vas enganchado todo el rato. Permite subir por sitios que de otra forma serían de escaladores, con la seguridad de no soltarte nunca.
+
+          Antes de empezar te enseñamos a usar el arnés y el disipador y a pasar los mosquetones de un tramo de cable al siguiente. El monitor va contigo y marca el ritmo. A mitad de la subida hay un puente colgante con el valle a tus pies: es la foto que todo el mundo se lleva.
+
+          No hace falta experiencia en escalada, pero sí no tener vértigo fuerte y estar en buena forma. Se puede hacer todo el año salvo con lluvia o hielo; en verano salimos temprano para evitar el calor de la pared.
+      - titulo: Kayak y canoa
+        categoria: Agua
+        texto: "Kayaks de dos plazas por un tramo tranquilo, ideal para familias."
+        nivel: Iniciación
+        duracion: "2 h"
+        edad: "Desde 8 años"
+        precio: "32 €"
+        temporada: "Abril a octubre"
+        incluye: "Kayak y pala; chaleco; bidón estanco; monitor titulado"
+        imagen: /fotos/act-kayak.jpg
+        detalle: |
+          Es la forma tranquila de estar en el río. Usamos kayaks autovaciables de dos plazas, muy estables, en un tramo de aguas calmadas donde se rema a gusto y se puede parar a bañarse.
+
+          El monitor os enseña a remar en pareja, a girar y a frenar, y os acompaña durante todo el recorrido. Es perfecto para hacer con niños a partir de ocho años, para quien no se anima con las aguas bravas o para descansar entre dos actividades más movidas.
+
+          Llevad bañador, crema solar y algo de beber. El bidón estanco va incluido para que el móvil y las llaves viajen secos.
+      - { titulo: Bici eléctrica de montaña, categoria: Tierra, texto: "Rutas guiadas por pistas y bordas del valle, sin sufrir en las subidas.", nivel: Iniciación, duracion: "3 h", edad: "Desde 14 años", precio: "40 €", temporada: "Todo el año", incluye: "Bici eléctrica y casco; guía; agua y barrita", imagen: /fotos/act-bici.jpg }
+      - { titulo: Parque de aventura, categoria: Tierra, texto: "Puentes colgantes, tirolinas y redes entre los árboles, por colores según la edad.", nivel: Iniciación, duracion: "2 h", edad: "Desde 6 años", precio: "22 €", temporada: "Semana Santa a octubre", incluye: "Arnés y casco; explicación de seguridad; monitores en el circuito", imagen: /fotos/act-parque.jpg }
+
+  jornada:
+    activa: true
+    antetitulo: Un descenso de rafting, paso a paso
+    titulo: Así es tu día con nosotros
+    texto: "Quedamos en la base y en tres horas has vuelto, duchado y con las fotos."
+    etapas:
+      - { hora: "9:30", titulo: Llegas a la base, texto: "Aparcas junto al río y te damos la bienvenida.", destacado: false }
+      - { hora: "9:45", titulo: Equipo a tu talla, texto: "Neopreno, escarpines, casco y chaleco.", destacado: false }
+      - { hora: "10:15", titulo: Charla en la orilla, texto: "Remadas, señales y qué hacer si caes al agua.", destacado: false }
+      - { hora: "10:30", titulo: Al río, texto: "Dos horas de rápidos con tu monitor.", destacado: true }
+      - { hora: "12:30", titulo: Ducha y fotos, texto: "Agua caliente y las fotos en tu móvil.", destacado: false }
+
+  packs:
+    activa: true
+    antetitulo: Combina actividades y ahorra
+    titulo: Packs multiaventura
+    texto: "Precio por persona. Para grupos de más de diez, te hacemos un precio a medida."
+    packs:
+      - { nombre: Pack Río, texto: "La mañana en balsa y la tarde en trineo.", incluye: "Rafting; hidrospeed; fotos", duracion: "1 día", precio: "75 €", destacado: false }
+      - { nombre: Pack Multiaventura, texto: "Lo mejor del valle en un fin de semana.", incluye: "Rafting; barranquismo; vía ferrata", duracion: "2 días", precio: "129 €", destacado: true }
+      - { nombre: Pack Familia, texto: "Para ir con niños desde ocho años.", incluye: "Kayak; parque de aventura", duracion: "Media jornada", precio: "52 €", destacado: false }
+      - { nombre: Pack Despedida, texto: "Río, pintura y comida para todo el grupo.", incluye: "Rafting; paintball; comida en la base", duracion: "1 día", precio: "89 €", destacado: false }
+
+  grupos:
+    activa: true
+    antetitulo: Despedidas, colegios y empresas
+    titulo: Vente con tu grupo
+    texto: "Organizamos el día entero: actividades, horarios, comida y alojamiento cerca si lo necesitas."
+    imagen: /fotos/grupos.jpg
+    cta: { texto: Pide presupuesto para tu grupo, url: "/#contacto" }
+    items:
+      - { titulo: Despedidas, texto: "Rafting, paintball y comida en la base, con fotos para el recuerdo." }
+      - { titulo: Colegios e institutos, texto: "Salidas de un día o de varios, con monitores y seguro para el grupo." }
+      - { titulo: Empresas, texto: "Jornadas de equipo con actividades que obligan a remar juntos." }
+      - { titulo: Cumpleaños y amigos, texto: "Desde seis personas, con la actividad que elijáis." }
+
+  seguridad:
+    activa: true
+    antetitulo: Lo que no se ve desde la orilla
+    titulo: Seguridad ante todo
+    texto: "Cada mañana miramos el caudal y el parte antes de abrir el río."
+    items:
+      - { titulo: Monitores titulados, texto: "Técnicos deportivos en aguas bravas y en barrancos, con años en este río." }
+      - { titulo: Seguro incluido, texto: "Accidentes y responsabilidad civil en todas las actividades." }
+      - { titulo: Material homologado, texto: "Cascos, chalecos y arneses revisados después de cada uso." }
+      - { titulo: Caudal y parte diario, texto: "Si el río no está seguro, cambiamos de tramo, de actividad o de fecha." }
+
+  galeria:
+    activa: true
+    antetitulo: Fotos de esta temporada
+    titulo: Así se vive en el valle
+    galeria:
+      - /fotos/galeria-2.jpg
+      - /fotos/galeria-1.jpg
+
+  opiniones:
+    activa: true
+    antetitulo: Lo que cuentan al salir del agua
+    titulo: Opiniones
+    testimonios:
+      - { texto: "Bajamos con dos niños de trece y catorce años y repetiríamos mañana. El monitor les dejó hasta llevar el timón un rato.", autor: Marta y Jordi, nota: "Rafting, agosto" }
+      - { texto: "Hicimos la despedida con el pack de rafting y paintball. Todo organizado, puntuales y con muy buen humor.", autor: Grupo de Íñigo, nota: Pack Despedida }
+      - { texto: "La vía ferrata es preciosa y el puente da respeto, pero te sientes seguro en todo momento.", autor: Laura P., nota: Vía ferrata }
+
+  base:
+    activa: true
+    antetitulo: Punto de encuentro
+    titulo: Nuestra base en Sort
+    texto: "Todas las actividades salen de aquí, a cinco minutos andando del centro de Sort. Llega un cuarto de hora antes."
+    imagen: /fotos/base.jpg
+    items:
+      - { titulo: Vestuarios y duchas calientes }
+      - { titulo: Aparcamiento gratuito }
+      - { titulo: Taquillas para tus cosas }
+      - { titulo: Zona de picnic junto al río }
+    horario:
+      - { dia: Abril a junio, horas: "9:00 a 19:00" }
+      - { dia: Julio y agosto, horas: "8:30 a 20:00" }
+      - { dia: Septiembre y octubre, horas: "9:30 a 18:00" }
+      - { dia: Noviembre a marzo, horas: "Solo con reserva" }
+
+  preguntas:
+    activa: true
+    antetitulo: Antes de reservar
+    titulo: Preguntas frecuentes
+    preguntas:
+      - { pregunta: "¿Hace falta saber nadar?", respuesta: "Para las actividades de agua, sí: lo justo para mantenerte a flote con el chaleco. Para la vía ferrata, la bici y el parque de aventura, no." }
+      - { pregunta: "¿Qué tengo que traer?", respuesta: "Bañador, toalla, chanclas y ropa de cambio. Todo el material técnico te lo damos en la base." }
+      - { pregunta: "¿Qué pasa si llueve o el río baja muy crecido?", respuesta: "Si no es seguro, te proponemos otro tramo, otra actividad u otra fecha. Si no te va bien ninguna, te devolvemos el dinero." }
+      - { pregunta: "¿Cómo se reserva y se paga?", respuesta: "Por WhatsApp, por teléfono o con el formulario. Te confirmamos la plaza y pagas una señal; el resto, el día de la actividad." }
+      - { pregunta: "¿Puedo ir si estoy embarazada o tengo una lesión?", respuesta: "Cuéntanoslo al reservar y te diremos qué actividades puedes hacer con tranquilidad." }
+
+  contacto:
+    activa: true
+    antetitulo: Reservas
+    titulo: Reserva tu actividad
+    texto: "Dinos qué te apetece, el día y cuántos sois. Te contestamos el mismo día con la plaza y la hora."
+    enlace_reservas: "https://www.caudalaventura.es/reservas"
+    niveles: "Es mi primera vez; He hecho alguna; Tengo experiencia"
+    boton_formulario: Pedir plaza

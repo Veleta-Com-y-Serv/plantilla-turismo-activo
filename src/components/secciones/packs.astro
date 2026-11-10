@@ -1,0 +1,56 @@
+---
+// Packs: la hoja de precios entre dos barras de 2 px (tabla de verdad): pack (nombre en Saira Condensed y una línea),
+// qué incluye (cada actividad en una etiqueta), duración y precio por persona en cifra condensada. El pack con
+// `destacado: true` se levanta un paso de papel, con la marca lima «El más pedido». En móvil, cada fila es un bloque.
+// Campos: `packs: [{nombre, texto, incluye, duracion, precio, destacado}]` (`incluye` con «;»); `nota` opcional.
+import { seccion, puntos } from '../../data/site';
+import Banda from '../ui/Banda.astro';
+import Titular from '../ui/Titular.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const packs = s?.packs ?? [];
+const hayIncluye = packs.some((p) => puntos(p.incluye).length);
+const hayDuracion = packs.some((p) => String(p.duracion ?? '').trim());
+const hayPrecio = packs.some((p) => String(p.precio ?? '').trim());
+---
+
+{
+  s && (s.titulo || s.texto || s.antetitulo || packs.length > 0) && (
+    <Banda id={id} color="papel">
+      <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} cabeza />
+      {packs.length > 0 && (
+        <table class="packs">
+          <caption class="sr-only">{s.titulo || 'Packs'}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Pack</th>
+              {hayIncluye && <th scope="col">Incluye</th>}
+              {hayDuracion && <th scope="col">Duración</th>}
+              {hayPrecio && <th scope="col">Por persona</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {packs.map((p) => (
+              <tr class:list={{ destacado: p.destacado === true }}>
+                <td>
+                  <p class="pack-nombre">{p.nombre}</p>
+                  {p.texto && <p class="pack-texto">{p.texto}</p>}
+                  {p.destacado && <span class="act-marca pack-marca">El más pedido</span>}
+                </td>
+                {hayIncluye && (
+                  <td data-etiqueta="Incluye">
+                    {puntos(p.incluye).length > 0 && <ul class="pack-incluye">{puntos(p.incluye).map((x) => <li>{x}</li>)}</ul>}
+                  </td>
+                )}
+                {hayDuracion && <td data-etiqueta="Duración"><span class="pack-duracion">{p.duracion}</span></td>}
+                {hayPrecio && <td data-etiqueta="Por persona"><span class="pack-precio">{p.precio}</span></td>}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {s.nota && <p class="packs-nota">{s.nota}</p>}
+    </Banda>
+  )
+}

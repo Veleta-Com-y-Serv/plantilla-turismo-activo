@@ -1,0 +1,43 @@
+---
+// Ejemplo de página adicional: usa el layout base y se enlaza desde el pie (o desde site.yaml → menu).
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+const c = site.contacto;
+---
+
+<Base titulo="Aviso legal y privacidad" descripcion={`Aviso legal y política de privacidad de ${site.nombre}.`}>
+  <section class="banda banda--clara">
+    <div class="contenedor">
+      <div class="cabeza">
+        <div class="cq">
+          <p class="antetitulo">{site.nombre}</p>
+          <h1 class="titulo-seccion" style="--k:8.6">Aviso legal y privacidad</h1>
+        </div>
+      </div>
+      <article class="texto-largo max-w-3xl">
+        <h2>Quiénes somos</h2>
+        <p>
+          Esta web pertenece a {site.nombre}{c.direccion && `, con domicilio en ${c.direccion}`}. Puedes escribirnos a {
+            c.email || 'nuestro correo de contacto'
+          }{c.telefono && ` o llamarnos al ${c.telefono}`}.
+        </p>
+        <h2>Qué datos tratamos</h2>
+        <p>
+          Solo los que nos envías al escribirnos: nombre, teléfono y, si nos pides una reserva, la fecha, la actividad,
+          cuántas personas sois, vuestro nivel y tu mensaje. Los usamos para responderte y organizar la actividad. No los
+          cedemos a nadie salvo obligación legal o a la aseguradora de la actividad, si hace falta.
+        </p>
+        <h2>Cuánto tiempo los guardamos</h2>
+        <p>El necesario para atender tu consulta y, si haces una actividad con nosotros, el que marque la ley.</p>
+        <h2>Tus derechos</h2>
+        <p>
+          Puedes pedir acceso, rectificación o supresión de tus datos escribiendo a {c.email || 'nuestro correo'}. También
+          puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).
+        </p>
+        <h2>Cookies</h2>
+        <p>Esta web no usa cookies de seguimiento. WhatsApp y los mapas se abren en la web o la aplicación de cada servicio.</p>
+        <p class="botones"><a class="btn-borde" href="/">Volver al inicio</a></p>
+      </article>
+    </div>
+  </section>
+</Base>

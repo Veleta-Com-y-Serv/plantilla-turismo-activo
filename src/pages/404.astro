@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base titulo="Página no encontrada">
+  <section class="banda banda--tinta error-banda">
+    <div class="contenedor">
+      <p class="antetitulo">Error 404</p>
+      <p class="error-cifra" aria-hidden="true">404</p>
+      <h1 class="titulo-seccion cq-no">Este tramo no lleva a ningún sitio</h1>
+      <p class="entrada mt-5">Puede que el enlace esté mal o que la página se haya movido. Vuelve al inicio y elige tu actividad.</p>
+      <p class="botones"><a class="btn" href="/">Volver al inicio</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .error-banda { min-height: calc(80svh - var(--alto-cabecera)); display: flex; align-items: center; }
+  .error-banda .error-cifra { color: var(--c-acento); margin-top: .5rem; }
+  .error-banda .titulo-seccion { font-size: clamp(1.7rem, 1rem + 3vw, 3.4rem); max-width: 18ch; }
+</style>

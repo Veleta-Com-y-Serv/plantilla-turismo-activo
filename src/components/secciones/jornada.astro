@@ -1,0 +1,32 @@
+---
+// La jornada: el día de una actividad como etapas sobre una sola barra, en la banda oscura (color primario).
+// Cada etapa: la hora en JetBrains Mono (cronómetro), el título en Saira Condensed y una línea. La etapa con
+// `destacado: true` va sobre el lima (el momento fuerte: el río). En móvil, en vertical con la barra a la izquierda.
+// Campos: `etapas: [{hora, titulo, texto, destacado}]`. Sin etapas solo sale la cabeza.
+import { seccion } from '../../data/site';
+import Banda from '../ui/Banda.astro';
+import Titular from '../ui/Titular.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const etapas = s?.etapas ?? [];
+---
+
+{
+  s && (s.titulo || s.texto || s.antetitulo || etapas.length > 0) && (
+    <Banda id={id} color="tinta">
+      <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} cabeza />
+      {etapas.length > 0 && (
+        <ol class="etapas" style={`--n:${Math.min(etapas.length, 6)}`}>
+          {etapas.map((e) => (
+            <li class:list={['etapa', { 'etapa--destacada': e.destacado === true }]}>
+              {e.hora && <span class="etapa-hora">{e.hora}</span>}
+              {e.titulo && <h3 class="etapa-titulo">{e.titulo}</h3>}
+              {e.texto && <p class="etapa-texto">{e.texto}</p>}
+            </li>
+          ))}
+        </ol>
+      )}
+    </Banda>
+  )
+}

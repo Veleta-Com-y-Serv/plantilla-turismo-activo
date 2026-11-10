@@ -1,0 +1,121 @@
+# Metadatos de la plantilla para el catálogo de NoExpertise.
+id: turismo-activo
+nombre: Turismo activo y aventura
+descripcion: "Web de multiaventura: actividades con nivel, edad y precio, packs, grupos y reserva por WhatsApp."
+sectores:
+  - { id: turismo-activo, nombre: Turismo activo }
+  - { id: multiaventura, nombre: Multiaventura }
+  - { id: rafting, nombre: Rafting y aguas bravas }
+  - { id: barranquismo, nombre: Barranquismo }
+  - { id: aventura, nombre: Turismo de aventura }
+  - { id: parque-aventura, nombre: Parque de aventura }
+secciones:
+  - { id: hero, nombre: Portada }
+  - { id: actividades, nombre: Actividades }
+  - { id: jornada, nombre: Así es el día }
+  - { id: packs, nombre: Packs }
+  - { id: grupos, nombre: Grupos y empresas }
+  - { id: seguridad, nombre: Seguridad }
+  - { id: galeria, nombre: Fotos }
+  - { id: opiniones, nombre: Opiniones }
+  - { id: base, nombre: Nuestra base }
+  - { id: preguntas, nombre: Preguntas frecuentes }
+  - { id: contacto, nombre: Reservas y contacto }
+estilo: sport
+plan_minimo: gratis
+version: 1.0.0
+base: astrowind
+demo_url: https://demo-plantilla-turismo-activo.noexpertise.com
+activa: true
+orden: 850
+
+# Fichas por elemento (docs/plantillas.md § Fichas por elemento): cada actividad con `detalle` tiene su página
+# en /actividades/<slug>/. Espejo en src/data/fichas.ts. Sin zonas: la empresa trabaja desde su base.
+fichas:
+  - { lista: actividades, campo: actividades, ruta: actividades, nombre: Actividad, tipo: TouristTrip }
+
+# Varias páginas (docs/plantillas.md § Varias páginas): reparto recomendado al activar «Varias páginas».
+# Inicio se queda con la portada y lo que no esté en ninguna página (aquí, las fotos y las opiniones).
+paginas:
+  - { ruta: actividades, titulo: Actividades, secciones: "actividades; jornada; packs" }
+  - { ruta: grupos, titulo: Grupos y empresas, secciones: "grupos" }
+  - { ruta: la-base, titulo: La base, secciones: "seguridad; base" }
+  - { ruta: reservas, titulo: Reservas, secciones: "preguntas; contacto" }
+
+# Asistente de puesta en marcha (NoExpertise): un paso por pantalla. Rutas del site sin índices;
+# tipos: texto y lista (la IA propone), datos, fotos, eleccion (colores y logo) y repaso.
+asistente:
+  - id: negocio
+    titulo: "Tu empresa"
+    pregunta: "¿Cómo se llama tu empresa, dónde está tu base y qué actividades ofrecéis?"
+    ayuda: "Por ejemplo: rafting, barrancos y vía ferrata desde nuestra base junto al río en Sort, con monitores titulados y para todos los niveles."
+    tipo: texto
+    campos: [nombre, eslogan, seo.titulo, seo.descripcion, secciones.hero.antetitulo, secciones.hero.titulo, secciones.hero.texto]
+  - id: contacto
+    titulo: "Cómo te reservan"
+    pregunta: "¿Dónde está tu base y cómo os pueden llamar, escribir o reservar?"
+    ayuda: "El teléfono y el WhatsApp salen en la barra fija del móvil, que es desde donde reservan casi todos. Si tienes un motor de reservas online, pega su enlace. Lo que dejes vacío no sale."
+    tipo: datos
+    campos: [contacto.telefono, contacto.whatsapp, contacto.email, contacto.direccion, contacto.horario, secciones.contacto.enlace_reservas, redes.instagram, redes.facebook]
+  - id: actividades
+    titulo: "Tus actividades"
+    pregunta: "¿Qué actividades ofrecéis? De cada una: en qué consiste, si es de agua, montaña o tierra, nivel, duración, edad mínima, temporada, qué incluye y el precio por persona. Una por línea."
+    ayuda: "Por ejemplo: «Rafting · Agua · Iniciación · 2 h en el río · desde 12 años · abril a octubre · neopreno, casco, chaleco y fotos · 39 €». Luego pones la foto de cada una en Contenido."
+    tipo: lista
+    campos: [secciones.actividades.actividades]
+  - id: jornada
+    titulo: "Así es el día"
+    pregunta: "¿Cómo es una actividad desde que llegan hasta que se van? Dime la hora y qué pasa en cada momento, uno por línea."
+    ayuda: "Por ejemplo: «9:30 Llegada a la base», «9:45 Os equipamos», «10:15 Charla de seguridad en la orilla», «10:30 Al río», «12:30 Ducha y fotos»."
+    tipo: lista
+    campos: [secciones.jornada.etapas]
+  - id: packs
+    titulo: "Packs y combinados"
+    pregunta: "¿Tenéis packs que combinen varias actividades? Nombre, qué actividades incluye, cuánto dura y el precio por persona. Uno por línea."
+    ayuda: "Por ejemplo: «Pack Multiaventura · rafting, barranco y vía ferrata · 2 días · 129 €». Si no tenéis packs, salta este paso y oculta el apartado en Contenido."
+    tipo: lista
+    campos: [secciones.packs.packs]
+  - id: grupos
+    titulo: "Grupos, colegios y empresas"
+    pregunta: "¿Organizáis actividades para grupos? Cuéntame para qué grupos (despedidas, colegios, empresas, cumpleaños) y qué les preparáis."
+    ayuda: "Por ejemplo: despedidas con rafting, paintball y comida; salidas escolares de varios días; jornadas de equipo para empresas."
+    tipo: texto
+    campos: [secciones.grupos.titulo, secciones.grupos.texto, secciones.grupos.items]
+  - id: seguridad
+    titulo: "Seguridad"
+    pregunta: "¿Qué hacéis para que todo salga seguro? Titulación de los monitores, seguros, material, cómo decidís si se sale."
+    ayuda: "Por ejemplo: técnicos deportivos en aguas bravas, seguro de accidentes y responsabilidad civil, material homologado y parte del río cada mañana."
+    tipo: texto
+    campos: [secciones.seguridad.titulo, secciones.seguridad.texto, secciones.seguridad.items]
+  - id: base
+    titulo: "Tu base"
+    pregunta: "¿Cómo es vuestra base o punto de encuentro? Dónde está, cómo se llega y qué servicios tiene."
+    ayuda: "Por ejemplo: a cinco minutos andando del centro, con vestuarios, duchas calientes, aparcamiento y taquillas. Di también con cuánta antelación hay que llegar."
+    tipo: texto
+    campos: [secciones.base.titulo, secciones.base.texto, secciones.base.items]
+  - id: horario
+    titulo: "Horario por temporadas"
+    pregunta: "¿Qué horario tenéis en cada época del año?"
+    ayuda: "Por ejemplo: «Abril a junio, de 9:00 a 19:00», «Julio y agosto, de 8:30 a 20:00», «Noviembre a marzo, solo con reserva»."
+    tipo: lista
+    campos: [secciones.base.horario]
+  - id: preguntas
+    titulo: "Preguntas frecuentes"
+    pregunta: "¿Qué os preguntan siempre antes de reservar? Escribe cada pregunta y lo que respondéis."
+    ayuda: "Por ejemplo: si hace falta saber nadar, qué hay que traer, qué pasa si llueve o el río baja crecido, cómo se paga la señal."
+    tipo: lista
+    campos: [secciones.preguntas.preguntas]
+  - id: fotos
+    titulo: "Tus fotos"
+    pregunta: "Pon una foto de portada en plena acción y, si quieres, las de tus grupos, tu base y tu temporada."
+    ayuda: "Las fotos tomadas desde el agua o de cerca, con luz de día, quedan mejor. La web las imprime en el color de tu marca. Las que no cambies se quedan como están."
+    tipo: fotos
+    campos: [secciones.hero.imagen, secciones.grupos.imagen, secciones.base.imagen, secciones.galeria.galeria]
+  - id: aspecto
+    titulo: "Colores y logo"
+    pregunta: "Elige los colores de tu web y, si tienes, tu logo."
+    tipo: eleccion
+    campos: [colores.primario, colores.acento, logo]
+  - id: repaso
+    titulo: "Repaso"
+    tipo: repaso
